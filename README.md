@@ -1,5 +1,5 @@
 # github_codelab
-An android app to list Java developers in Nairobi
+An android app to list Java developers in Nairobi.
 
 ## Online mockups
 Navigable wireframes for the app are available [here](https://www.justinmind.com/usernote/tests/39795439/39821490/39821492/index.html)
