@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="@string/sample_username"
-        android:textSize="40sp" />
+        android:textSize="28sp" />
 
 </LinearLayout>
