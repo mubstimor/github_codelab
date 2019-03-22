@@ -1,6 +1,8 @@
 # github_codelab
 An android app to list Java developers in Nairobi.
 
+[![CircleCI](https://circleci.com/gh/mubstimor/github_codelab.svg?style=svg)](https://circleci.com/gh/mubstimor/github_codelab) [![Maintainability](https://api.codeclimate.com/v1/badges/9c3d86757e6b7d0b2304/maintainability)](https://codeclimate.com/github/mubstimor/github_codelab/maintainability) [![codecov](https://codecov.io/gh/mubstimor/github_codelab/branch/develop/graph/badge.svg)](https://codecov.io/gh/mubstimor/github_codelab)
+
 ## Online mockups
 Navigable wireframes for the app are available [here](https://www.justinmind.com/usernote/tests/39795439/39821490/39821492/index.html)
 
