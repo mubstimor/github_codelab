@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class GithubUserAdapter extends RecyclerView.Adapter<GithubUserAdapter.UserViewHolder> {
 
     private ListItemClickListener mOnClickListener;
@@ -48,7 +50,7 @@ public class GithubUserAdapter extends RecyclerView.Adapter<GithubUserAdapter.Us
         holder.itemView.setBackgroundColor(backgroundColorForViewHolder);
         GithubUser list_items = list_members.get(position);
         holder.usernameView.setText(list_items.getUsername());
-        Picasso.with(context).load(list_items.getImageUrl()).transform(new CircleTransform()).into(holder.userImageView);
+        Picasso.with(context).load(list_items.getImageUrl()).into(holder.userImageView);
     }
 
 
@@ -70,13 +72,13 @@ public class GithubUserAdapter extends RecyclerView.Adapter<GithubUserAdapter.Us
     class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView usernameView;
-        ImageView userImageView;
+        CircleImageView userImageView;
 
         public UserViewHolder(View itemView) {
             super(itemView);
 
             usernameView = (TextView) itemView.findViewById(R.id.tv_username);
-            userImageView = (ImageView) itemView.findViewById(R.id.iv_user_image);
+            userImageView = (CircleImageView) itemView.findViewById(R.id.iv_user_image);
             itemView.setOnClickListener(this);
         }
 
