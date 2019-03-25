@@ -2,4 +2,12 @@
     <string name="app_name">Codelab</string>
     <string name="app_label">Java Developers in Kenya</string>
     <string name="sample_username">timothy</string>
+    <string name="sample_full_name">Timothy Mubiru</string>
+    <string name="sample_company">Andela</string>
+    <string name="sample_location">Nairobi, Kenya</string>
+    <string name="sample_bio">
+        1. .NET Developer [ C#, VB] @bunifu-framework
+        \n2. Java Developer [Java Swing, JavaFX]
+        \n3. Graphic Design [ Raster &amp; Vector] https://www.youtube.com/keeptoo
+    </string>
 </resources>

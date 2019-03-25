@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_user_image"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_margin="20dp"
+                android:src="@drawable/gitty"
+                android:contentDescription="@string/sample_username"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:id="@+id/tv_full_name"
+                android:textSize="24sp"
+                android:text="@string/sample_full_name"
+                android:textStyle="bold"
+                android:layout_toRightOf="@id/iv_user_image"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_username"
+                android:textSize="18sp"
+                android:text="@string/sample_username"
+                android:layout_below="@+id/tv_full_name"
+                android:layout_toRightOf="@id/iv_user_image"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/iv_company"
+                android:src="@drawable/company"
+                android:layout_below="@+id/tv_username"
+                android:layout_toRightOf="@id/iv_user_image"
+                />
+
+            <TextView
+                android:id="@+id/tv_user_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_username"
+                android:text="@string/sample_company"
+                android:layout_toRightOf="@id/iv_company"
+                android:paddingTop="5dp"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/iv_location"
+                android:src="@drawable/location"
+                android:layout_toRightOf="@id/iv_user_image"
+                android:layout_below="@+id/iv_company"
+                />
+
+            <TextView
+                android:id="@+id/tv_user_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_user_company"
+                android:paddingTop="7dp"
+                android:text="@string/sample_location"
+                android:layout_toRightOf="@id/iv_location"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_user_bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_user_image"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/sample_bio"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/iv_share"
+                android:src="@android:drawable/ic_menu_share"
+                android:layout_marginTop="100dp"
+                android:paddingTop="220dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:outlineAmbientShadowColor="@color/colorPrimaryDark"
+                />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>
