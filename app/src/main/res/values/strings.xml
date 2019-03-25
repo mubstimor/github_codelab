@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Codelab</string>
+    <string name="app_label">Java Developers in Kenya</string>
+    <string name="sample_username">timothy</string>
 </resources>
