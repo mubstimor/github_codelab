@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserDetailActivity extends AppCompatActivity {
 
     Intent intent;
     TextView usernameTextView;
-    ImageView userImageView;
+    CircleImageView userImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +25,12 @@ public class UserDetailActivity extends AppCompatActivity {
 
         intent = getIntent();
         usernameTextView = (TextView) findViewById(R.id.tv_full_name);
-        userImageView = (ImageView) findViewById(R.id.iv_user_image);
+        userImageView = (CircleImageView) findViewById(R.id.iv_user_image);
 
         String username = intent.getStringExtra("user");
         String imageUrl = intent.getStringExtra("image");
-        Picasso.with(UserDetailActivity.this).load(imageUrl).transform(new CircleTransform()).into(userImageView);
+        Picasso.with(UserDetailActivity.this).load(imageUrl).into(userImageView);
 
         usernameTextView.setText(username);
-
     }
 }
