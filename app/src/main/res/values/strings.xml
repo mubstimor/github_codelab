@@ -4,6 +4,7 @@
     <string name="sample_username">timothy</string>
     <string name="sample_full_name">Timothy Mubiru</string>
     <string name="sample_company">Andela</string>
+    <string name="details_activity">Details</string>
     <string name="sample_location">Nairobi, Kenya</string>
     <string name="sample_bio">
         1. .NET Developer [ C#, VB] @bunifu-framework
