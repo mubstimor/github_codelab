@@ -1,8 +1,10 @@
-package mubstimor.android.codelab;
+package mubstimor.android.codelab.utils;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+
+import mubstimor.android.codelab.R;
 
 public class ColorUtils {
 
