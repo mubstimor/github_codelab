@@ -5,14 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="590 Users"
-        android:layout_gravity="center"
-        android:textSize="30sp"/>
+        android:id="@+id/tv_total_users"
+        android:text="@string/to_be_updated"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:background="@color/grey"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
 
     <include layout="@layout/recycler_view" />
 

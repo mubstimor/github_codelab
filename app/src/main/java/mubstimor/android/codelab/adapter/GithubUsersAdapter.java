@@ -1,11 +1,12 @@
-package mubstimor.android.codelab;
+package mubstimor.android.codelab.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -13,22 +14,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import mubstimor.android.codelab.utils.ColorUtils;
+import mubstimor.android.codelab.R;
+import mubstimor.android.codelab.model.GithubUser;
+import mubstimor.android.codelab.view.UserDetailActivity;
 
-public class GithubUserAdapter extends RecyclerView.Adapter<GithubUserAdapter.UserViewHolder> {
-
-    private ListItemClickListener mOnClickListener;
+public class GithubUsersAdapter extends RecyclerView.Adapter<GithubUsersAdapter.UserViewHolder> {
 
     private Context context;
 
     private ArrayList<GithubUser> list_members=new ArrayList<>();
-
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
-    }
-
-    public GithubUserAdapter(ListItemClickListener listener) {
-        mOnClickListener = listener;
-    }
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -45,12 +40,24 @@ public class GithubUserAdapter extends RecyclerView.Adapter<GithubUserAdapter.Us
 
     @Override
     public void onBindViewHolder(UserViewHolder holder, int position) {
+        final int viewPosition = position;
         int backgroundColorForViewHolder = ColorUtils
                 .getViewHolderBackgroundColorFromInstance(context, position);
         holder.itemView.setBackgroundColor(backgroundColorForViewHolder);
-        GithubUser list_items = list_members.get(position);
-        holder.usernameView.setText(list_items.getUsername());
-        Picasso.with(context).load(list_items.getImageUrl()).into(holder.userImageView);
+        GithubUser githubUser = list_members.get(viewPosition);
+        holder.usernameView.setText(githubUser.getUsername());
+        Picasso.with(context).load(githubUser.getAvatarUrl()).into(holder.userImageView);
+
+        holder.itemlinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GithubUser githubUser1 = list_members.get(viewPosition);
+                Intent intent = new Intent(context, UserDetailActivity.class);
+                intent.putExtra("user", githubUser1.getUsername());
+                intent.putExtra("image", githubUser1.getAvatarUrl());
+                context.startActivity(intent);
+            }
+        });
     }
 
 
@@ -69,23 +76,18 @@ public class GithubUserAdapter extends RecyclerView.Adapter<GithubUserAdapter.Us
     }
 
 
-    class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class UserViewHolder extends RecyclerView.ViewHolder {
 
         TextView usernameView;
         CircleImageView userImageView;
+        LinearLayout itemlinearLayout;
 
         public UserViewHolder(View itemView) {
             super(itemView);
 
             usernameView = (TextView) itemView.findViewById(R.id.tv_username);
             userImageView = (CircleImageView) itemView.findViewById(R.id.iv_user_image);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPosition);
+            itemlinearLayout = (LinearLayout) itemView.findViewById(R.id.item_parent_layout);
         }
 
     }

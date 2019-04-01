@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/iv_user_image"
                 android:paddingTop="20dp"
-                android:text="@string/sample_full_name"
+                android:text="@string/to_be_updated"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_full_name"
                 android:layout_toRightOf="@id/iv_user_image"
-                android:text="@string/sample_username"
+                android:text="@string/to_be_updated"
                 android:textSize="18sp" />
 
             <ImageView
@@ -58,7 +58,7 @@
                 android:layout_below="@+id/tv_username"
                 android:layout_toRightOf="@id/iv_company"
                 android:paddingTop="5dp"
-                android:text="@string/sample_company"
+                android:text="@string/to_be_updated"
                 android:textSize="18sp" />
 
             <ImageView
@@ -76,7 +76,7 @@
                 android:layout_below="@+id/tv_user_company"
                 android:layout_toRightOf="@id/iv_location"
                 android:paddingTop="7dp"
-                android:text="@string/sample_location"
+                android:text="@string/to_be_updated"
                 android:textSize="18sp" />
 
             <TextView
@@ -90,7 +90,24 @@
                 android:layout_marginRight="0dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:text="@string/sample_bio"
+                android:text="@string/to_be_updated"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_user_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_user_bio"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/to_be_updated"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center"
                 android:textSize="18sp" />
 
             <ImageView
