@@ -5,9 +5,14 @@ import android.util.Log;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GithubService {
-    private Retrofit retrofit = null;
+/**
+ * This class creates a retrofit instance.
+ * @author Timothy Mubiru
+ */
 
+public class GithubService {
+
+    private Retrofit retrofit = null;
 
     /**
      * This method creates a new instance of the API interface.
@@ -16,12 +21,12 @@ public class GithubService {
      */
     public GithubApi getAPI() {
         Log.i("get API", "API now set to git");
-        String BASE_URL = "https://api.github.com/";
+        String baseURL = "https://api.github.com/";
 
         if (retrofit == null) {
             retrofit = new Retrofit
                     .Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(baseURL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
