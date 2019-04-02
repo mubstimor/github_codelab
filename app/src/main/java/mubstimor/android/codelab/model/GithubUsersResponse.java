@@ -2,7 +2,12 @@ package mubstimor.android.codelab.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class implements a model for GithubUsers response.
+ * @author Timothy Mubiru
+ */
 
 public class GithubUsersResponse {
 
@@ -10,14 +15,19 @@ public class GithubUsersResponse {
     private int totalCount;
 
     @SerializedName("items")
-    private ArrayList<GithubUser> githubUserList;
+    private List<GithubUser> githubUserList;
 
-    public ArrayList<GithubUser> getGithubUserList() {
+    /**
+     * @return githubUserList list of Github users
+     */
+    public List<GithubUser> getGithubUserList() {
         return githubUserList;
     }
 
-    public int getTotalCount(){
+    /**
+     * @return totalCount total number from search
+     */
+    public int getTotalCount() {
         return totalCount;
     }
-
 }

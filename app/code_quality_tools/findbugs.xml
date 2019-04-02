@@ -1,0 +1,58 @@
+<FindBugsFilter>
+
+    <!-- Do not check auto-generated resources classes -->
+    <Match>
+        <Or>
+            <Class name="~.*\.R\$.*"/>
+            <Class name="~.*\.Manifest\$.*"/>
+        </Or>
+    </Match>
+
+    <!-- Do not check auto-generated classes (Dagger puts $ into class names) -->
+    <Match>
+        <Class name="~.*Dagger*.*"/>
+    </Match>
+
+    <!-- Do not check room arch components auto-generated classes -->
+    <Match>
+        <Class name="~.*_Impl*.*"/>
+    </Match>
+
+    <!-- Do not check for non-initialized fields in tests because usually we initialize them in @Before -->
+    <Match>
+        <Class name="~.*Test"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"
+            type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
+
+    <!-- Ignore UPM in lambdas from Retrolambda, FindBugs does not correctly understand them -->
+    <Match>
+        <Bug code="UPM"/>
+        <Class name="~.*\$\$Lambda\$.*"/>
+    </Match>
+
+    <!-- Ignore Butterknife auto-generated classes -->
+    <Match>
+        <Class name="~.*\$\$ViewBinder*"/>
+    </Match>
+    <!-- Ignore unread fields -->
+    <Match>
+        <Bug pattern="URF_UNREAD_FIELD"/>
+    </Match>
+    <!-- Ignore Null point on some path fields -->
+    <Match>
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Match>
+    <!-- Ignore unread fields -->
+    <Match>
+        <Bug pattern="UUF_UNUSED_FIELD"/>
+    </Match>
+    <!-- Ignore dead local store. -->
+    <Match>
+        <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+    </Match>
+    <Match>
+        <Class name="~.*\$\$ViewBinder\$InnerUnbinder*"/>
+    </Match>
+
+</FindBugsFilter>
