@@ -4,20 +4,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import mubstimor.android.codelab.R;
 import mubstimor.android.codelab.adapter.GithubUsersAdapter;
 import mubstimor.android.codelab.model.GithubUser;
 import mubstimor.android.codelab.presenter.GithubPresenter;
 
+/**
+ * This class implements the Main Activity for the app.
+ * @author Timothy Mubiru
+ */
+
 public class MainActivity extends AppCompatActivity {
 
-    private GithubUsersAdapter mAdapter;
-    private RecyclerView githubUsersList;
+    GithubUsersAdapter mAdapter;
+    RecyclerView githubUsersList;
     private SearchView searchView;
     TextView totalUserCountTextView;
 
@@ -28,15 +32,12 @@ public class MainActivity extends AppCompatActivity {
         this.setTitle(R.string.app_label);
 
         totalUserCountTextView = (TextView) findViewById(R.id.tv_total_users);
-
         searchView = new SearchView() {
             @Override
-            public void usersReady(ArrayList<GithubUser> githubUsers, int totalCount) {
-
-                mAdapter.setListContent(githubUsers);
-                githubUsersList.setAdapter(mAdapter);
-                totalUserCountTextView.setText(String.valueOf(totalCount)+ " Developers");
-
+            public void usersReady(List<GithubUser> githubUsers, int totalCount) {
+            mAdapter.setListContent(githubUsers);
+            githubUsersList.setAdapter(mAdapter);
+            totalUserCountTextView.setText(totalCount + " Developers");
             }
         };
 

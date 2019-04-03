@@ -1,8 +1,6 @@
 package mubstimor.android.codelab.presenter;
 
-import android.util.Log;
-
-import java.util.ArrayList;
+import java.util.List;
 
 import mubstimor.android.codelab.model.GithubUser;
 import mubstimor.android.codelab.model.GithubUsersResponse;
@@ -13,27 +11,42 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * This class implements a Presenter that maps views to models.
+ * @author Timothy Mubiru
+ */
+
 public class GithubPresenter {
 
     private GithubService githubService;
 
+    /**
+     * Initialises a service that connects to API endpoints.
+     */
     public GithubPresenter() {
         if (this.githubService == null) {
             this.githubService = new GithubService();
         }
     }
 
+    /**
+     * get users from endpoint.
+     * @param searchView view to which response is mapped
+     */
     public void getGithubUsers(final SearchView searchView) {
         githubService
                 .getAPI()
                 .getSearchResults()
                 .enqueue(new Callback<GithubUsersResponse>() {
                     @Override
-                    public void onResponse(Call<GithubUsersResponse> call, Response<GithubUsersResponse> response) {
+                    public void onResponse(
+                            Call<GithubUsersResponse> call,
+                            Response<GithubUsersResponse> response
+                    ) {
                         GithubUsersResponse data = response.body();
 
                         if (data != null && data.getGithubUserList() != null) {
-                            ArrayList<GithubUser> result = data.getGithubUserList();
+                            List<GithubUser> result = data.getGithubUserList();
                             int totalCount = data.getTotalCount();
                             searchView.usersReady(result, totalCount);
                         }
@@ -41,15 +54,25 @@ public class GithubPresenter {
 
                     @Override
                     public void onFailure(Call<GithubUsersResponse> call, Throwable t) {
-                        try {
-                            throw new InterruptedException("Something went wrong!");
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        throwError();
                     }
                 });
     }
 
+    /**
+     * throw error on request failure.
+     */
+    void throwError() {
+        try {
+            throw new InterruptedException("Something went wrong!");
+        } catch (InterruptedException e) { }
+    }
+
+    /**
+     * Get profile from user detail API.
+     * @param user username for user to retrieve
+     * @param profileView view to which response is mapped
+     */
     public void getUserProfile(String user, final ProfileView profileView) {
         githubService
                 .getAPI()
@@ -66,11 +89,7 @@ public class GithubPresenter {
 
                     @Override
                     public void onFailure(Call<GithubUser> call, Throwable t) {
-                        try {
-                            throw new InterruptedException("Something went wrong!");
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        throwError();
                     }
                 });
     }
