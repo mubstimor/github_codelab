@@ -1,5 +1,8 @@
 package mubstimor.android.codelab.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -7,7 +10,17 @@ import com.google.gson.annotations.SerializedName;
  * @author Timothy Mubiru
  */
 
-public class GithubUser {
+public class GithubUser implements Parcelable {
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public GithubUser createFromParcel(Parcel in) {
+            return new GithubUser(in);
+        }
+
+        public GithubUser[] newArray(int size) {
+            return new GithubUser[size];
+        }
+    };
 
     @SerializedName("login")
     private String username;
@@ -95,6 +108,16 @@ public class GithubUser {
     }
 
     /**
+     * constructor for Github list item.
+     * @param username user handle
+     * @param avatarUrl profile image
+     */
+    public GithubUser(String username, String avatarUrl) {
+        this.username = username;
+        this.avatarUrl = avatarUrl;
+    }
+
+    /**
      * set full name.
      * @param name full name of user
      */
@@ -132,5 +155,24 @@ public class GithubUser {
      */
     public void setHtmlUrl(String htmlUrl) {
         this.htmlUrl = htmlUrl;
+    }
+
+     /** Parcelling part.
+     * @param in parcel object
+     */
+    public GithubUser(Parcel in) {
+        this.username = in.readString();
+        this.avatarUrl = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.username);
+        dest.writeString(this.avatarUrl);
     }
 }

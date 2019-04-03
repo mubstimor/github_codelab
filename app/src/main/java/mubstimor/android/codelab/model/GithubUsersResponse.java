@@ -30,4 +30,5 @@ public class GithubUsersResponse {
     public int getTotalCount() {
         return totalCount;
     }
+
 }

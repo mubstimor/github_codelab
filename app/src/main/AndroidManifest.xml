@@ -12,8 +12,12 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.UserDetailActivity"
             android:label="@string/details_activity"
-            android:parentActivityName=".view.MainActivity"></activity>
-        <activity android:name=".view.MainActivity">
+            android:parentActivityName=".view.MainActivity"
+            android:configChanges="orientation"
+            ></activity>
+        <activity android:name=".view.MainActivity"
+            android:configChanges="orientation"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

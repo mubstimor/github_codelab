@@ -56,8 +56,10 @@ public class GithubUsersAdapter extends RecyclerView.Adapter<GithubUsersAdapter.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserDetailActivity.class);
-                intent.putExtra("user", githubUser.getUsername());
-                intent.putExtra("image", githubUser.getAvatarUrl());
+                intent.putExtra("githubUser", new GithubUser(
+                        githubUser.getUsername(),
+                        githubUser.getAvatarUrl()
+                ));
                 context.startActivity(intent);
             }
         });
