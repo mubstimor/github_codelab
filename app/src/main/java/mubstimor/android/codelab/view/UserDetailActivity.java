@@ -45,19 +45,19 @@ public class UserDetailActivity extends AppCompatActivity {
         companyTextView = (TextView) findViewById(R.id.tv_user_company);
         bioTextView = (TextView) findViewById(R.id.tv_user_bio);
 
-        String username = intent.getStringExtra("user");
-        String imageUrl = intent.getStringExtra("image");
+        Bundle data = getIntent().getExtras();
+        GithubUser githubUser = (GithubUser) data.getParcelable("githubUser");
+        String username = githubUser.getUsername();
+        String imageUrl = githubUser.getAvatarUrl();
 
         Picasso.with(UserDetailActivity.this).load(imageUrl).into(userImageView);
         usernameTextView.setText(username);
-
         profileView = new ProfileView() {
             @Override
             public void profileReady(GithubUser githubUser) {
                 updateUI(githubUser);
             }
         };
-
         GithubPresenter githubPresenter = new GithubPresenter();
         githubPresenter.getUserProfile(username, profileView);
     }
