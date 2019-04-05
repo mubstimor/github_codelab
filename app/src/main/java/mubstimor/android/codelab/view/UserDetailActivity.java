@@ -3,6 +3,9 @@ package mubstimor.android.codelab.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -27,8 +30,10 @@ public class UserDetailActivity extends AppCompatActivity {
     TextView companyTextView;
     TextView bioTextView;
     TextView linkTextView;
+    ImageView shareButton;
 
     private ProfileView profileView;
+    String profileUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +42,11 @@ public class UserDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_detail);
 
         intent = getIntent();
-        fullnameTextView = (TextView) findViewById(R.id.tv_full_name);
-        usernameTextView = (TextView) findViewById(R.id.tv_username);
-        userImageView = findViewById(R.id.iv_user_image);
-        linkTextView = (TextView) findViewById(R.id.tv_user_link);
-        locationTextView = (TextView) findViewById(R.id.tv_user_location);
-        companyTextView = (TextView) findViewById(R.id.tv_user_company);
-        bioTextView = (TextView) findViewById(R.id.tv_user_bio);
+        initViews();
 
         Bundle data = getIntent().getExtras();
         GithubUser githubUser = (GithubUser) data.getParcelable("githubUser");
-        String username = githubUser.getUsername();
+        final String username = githubUser.getUsername();
         String imageUrl = githubUser.getAvatarUrl();
 
         Picasso.with(UserDetailActivity.this).load(imageUrl).into(userImageView);
@@ -60,6 +59,26 @@ public class UserDetailActivity extends AppCompatActivity {
         };
         GithubPresenter githubPresenter = new GithubPresenter();
         githubPresenter.getUserProfile(username, profileView);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareProfile(username, profileUrl);
+            }
+        });
+    }
+
+    /**
+     * set view fields here.
+     */
+    private void initViews() {
+        fullnameTextView = (TextView) findViewById(R.id.tv_full_name);
+        usernameTextView = (TextView) findViewById(R.id.tv_username);
+        userImageView = findViewById(R.id.iv_user_image);
+        linkTextView = (TextView) findViewById(R.id.tv_user_link);
+        locationTextView = (TextView) findViewById(R.id.tv_user_location);
+        companyTextView = (TextView) findViewById(R.id.tv_user_company);
+        bioTextView = (TextView) findViewById(R.id.tv_user_bio);
+        shareButton = (ImageView) findViewById(R.id.iv_share);
     }
 
     /**
@@ -77,5 +96,20 @@ public class UserDetailActivity extends AppCompatActivity {
             companyTextView.setText(githubUser.getCompany());
         }
         linkTextView.setText(githubUser.getHtmlUrl());
+        profileUrl = githubUser.getHtmlUrl();
     }
+
+    /**
+     * Share user profile.
+     * @param username user handle
+     * @param htmlUrl profile address
+     */
+    public void shareProfile(String username, String htmlUrl) {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/html");
+        String message = "Check out this awesome developer @" + username + "</b>, " + htmlUrl;
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(message));
+        startActivity(Intent.createChooser(sharingIntent, "Share using"));
+    }
+
 }
