@@ -1,15 +1,15 @@
 package mubstimor.android.codelab.view;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.support.design.widget.Snackbar;
 
@@ -37,10 +37,15 @@ public class MainActivity extends AppCompatActivity implements
     TextView totalUserCountTextView;
     List<GithubUser> githubUserArrayList;
     static final String USERS_KEY = "githubUsers";
-    LinearLayoutManager layoutManager;
+    GridLayoutManager gridLayoutManager;
+    ProgressBar progressBar;
+    SwipeRefreshLayout swipeRefreshLayout;
+    int totalDevCount;
 
     private static final String LIST_STATE = "listState";
+    private static final String TOTAL_COUNT = "totalCount";
     private Parcelable mListState;
+    int hasRun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,45 +54,61 @@ public class MainActivity extends AppCompatActivity implements
         this.setTitle(R.string.app_label);
 
         totalUserCountTextView = (TextView) findViewById(R.id.tv_total_users);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        swipeToRefresh();
         recyclerView = findViewById(R.id.rv_gitusers);
 
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridLayoutManager = getGridLayoutManager(2);
+        } else {
+            gridLayoutManager = getGridLayoutManager(3);
+        }
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
-
         mAdapter = new GithubUsersAdapter();
 
-        checkConnection();
-
-        if (!NetworkUtility.isOnline(getApplicationContext())) {
-            showSnackBar(MainActivity.this, "No Internet Connection");
+        if (savedInstanceState != null) {
+            githubUserArrayList = savedInstanceState.getParcelableArrayList(USERS_KEY);
+            totalDevCount = savedInstanceState.getInt(TOTAL_COUNT);
+            mListState = savedInstanceState.getParcelable(LIST_STATE);
+            hasRun = 1;
         } else {
             downloadData();
         }
     }
 
     /**
-     * checks if connection exists.
+     * updates UI on swipe.
      */
-    private void checkConnection() {
-        boolean isConnected = NetworkUtility.isOnline(getApplicationContext());
-        showSnackBar(MainActivity.this, "Status " + isConnected);
+    private void swipeToRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadData();
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+    }
+
+    /**
+     * set grid layout manager.
+     * @param spanCount number of columns
+     * @return specified grid layour
+     */
+    private GridLayoutManager getGridLayoutManager(int spanCount) {
+        return new GridLayoutManager(this, spanCount, GridLayoutManager.VERTICAL, false);
     }
 
     /**
      * Download github user data from search API.
      */
     void downloadData() {
+        progressBar.setVisibility(View.VISIBLE);
         GithubPresenter githubPresenter = new GithubPresenter();
         githubPresenter.getGithubUsers(this);
-    }
-
-    /**
-     * Refresh activity on click of button.
-     */
-    void refreshOnNetworkChange() {
-        Log.i("Reloading", "refreshing 1");
     }
 
     @Override
@@ -97,7 +118,8 @@ public class MainActivity extends AppCompatActivity implements
                 USERS_KEY,
                 (ArrayList<? extends Parcelable>) githubUserArrayList
         );
-        mListState = layoutManager.onSaveInstanceState();
+        outState.putInt(TOTAL_COUNT, totalDevCount);
+        mListState = gridLayoutManager.onSaveInstanceState();
         outState.putParcelable(LIST_STATE, mListState);
     }
 
@@ -106,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
             githubUserArrayList = savedInstanceState.getParcelableArrayList(USERS_KEY);
+            totalDevCount = savedInstanceState.getInt(TOTAL_COUNT);
             mListState = savedInstanceState.getParcelable(LIST_STATE);
         }
     }
@@ -115,8 +138,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onResume();
         new GithubApp().getmInstance().setNetworkListener(this);
         if (mListState != null) {
-            displayData(githubUserArrayList);
-            layoutManager.onRestoreInstanceState(mListState);
+            displayData(githubUserArrayList, totalDevCount);
+            gridLayoutManager.onRestoreInstanceState(mListState);
             mListState = null;
         }
     }
@@ -125,14 +148,17 @@ public class MainActivity extends AppCompatActivity implements
      * Display data in recycler view.
      *
      * @param githubUserArrayList list of users
+     * @param totalCount total number of developer
      */
-    private void displayData(List<GithubUser> githubUserArrayList) {
+    private void displayData(List<GithubUser> githubUserArrayList, int totalCount) {
         try {
+            totalUserCountTextView.setText(totalCount + " Developers");
             mAdapter.setListContent(githubUserArrayList);
             mAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(mAdapter);
+            progressBar.setVisibility(View.GONE);
         } catch (NullPointerException e) {
-            Log.i("Restore", "Silent restore");
+            // intentionally left blank
         }
     }
 
@@ -146,13 +172,6 @@ public class MainActivity extends AppCompatActivity implements
         View rootView = activity.getWindow().getDecorView().findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
         if (!NetworkUtility.isOnline(getApplicationContext())) {
-            snackbar.setAction("RETRY", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    refreshOnNetworkChange();
-                }
-            });
-            snackbar.setActionTextColor(Color.RED);
             snackbar.setDuration(Snackbar.LENGTH_INDEFINITE);
         }
         snackbar.show();
@@ -161,8 +180,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void usersReady(List<GithubUser> githubUsers, int totalCount) {
         githubUserArrayList = (ArrayList<GithubUser>) githubUsers;
-
-        displayData(githubUsers);
+        totalDevCount = totalCount;
+        displayData(githubUsers, totalCount);
         totalUserCountTextView.setText(totalCount + " Developers");
     }
 
@@ -171,15 +190,10 @@ public class MainActivity extends AppCompatActivity implements
         if (!isConnected) {
             showSnackBar(MainActivity.this, "No Internet Connection available. ");
         } else {
-            showSnackBar(MainActivity.this, "Internet Connection now available");
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //Do something after 100ms
-                    downloadData();
-                }
-            }, 100);
+            showSnackBar(MainActivity.this, "...");
+            if (hasRun != 1) {
+                downloadData();
+            }
         }
     }
 
