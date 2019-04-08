@@ -20,7 +20,7 @@ import mubstimor.android.codelab.presenter.GithubPresenter;
  * @author Timothy Mubiru
  */
 
-public class UserDetailActivity extends AppCompatActivity {
+public class UserDetailActivity extends AppCompatActivity implements ProfileView {
 
     Intent intent;
     TextView fullnameTextView;
@@ -32,7 +32,6 @@ public class UserDetailActivity extends AppCompatActivity {
     TextView linkTextView;
     ImageView shareButton;
 
-    private ProfileView profileView;
     String profileUrl;
 
     @Override
@@ -51,14 +50,9 @@ public class UserDetailActivity extends AppCompatActivity {
 
         Picasso.with(UserDetailActivity.this).load(imageUrl).into(userImageView);
         usernameTextView.setText(username);
-        profileView = new ProfileView() {
-            @Override
-            public void profileReady(GithubUser githubUser) {
-                updateUI(githubUser);
-            }
-        };
+
         GithubPresenter githubPresenter = new GithubPresenter();
-        githubPresenter.getUserProfile(username, profileView);
+        githubPresenter.getUserProfile(username, this);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,4 +106,8 @@ public class UserDetailActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(sharingIntent, "Share using"));
     }
 
+    @Override
+    public void profileReady(GithubUser githubUser) {
+        updateUI(githubUser);
+    }
 }

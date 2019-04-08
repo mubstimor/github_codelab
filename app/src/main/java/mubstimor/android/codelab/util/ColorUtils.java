@@ -1,4 +1,4 @@
-package mubstimor.android.codelab.utils;
+package mubstimor.android.codelab.util;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

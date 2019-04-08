@@ -1,7 +1,5 @@
 package mubstimor.android.codelab.service;
 
-import android.util.Log;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -20,7 +18,6 @@ public class GithubService {
      * @return The API interface
      */
     public GithubApi getAPI() {
-        Log.i("get API", "API now set to git");
         String baseURL = "https://api.github.com/";
 
         if (retrofit == null) {

@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import mubstimor.android.codelab.utils.ColorUtils;
+import mubstimor.android.codelab.util.ColorUtils;
 import mubstimor.android.codelab.R;
 import mubstimor.android.codelab.model.GithubUser;
 import mubstimor.android.codelab.view.UserDetailActivity;
