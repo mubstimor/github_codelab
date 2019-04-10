@@ -14,6 +14,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import mubstimor.android.codelab.R;
 import mubstimor.android.codelab.model.GithubUser;
 import mubstimor.android.codelab.presenter.GithubPresenter;
+import mubstimor.android.codelab.util.EspressoIdlingResource;
 
 /**
  * This class implements the User detail activity.
@@ -33,12 +34,14 @@ public class UserDetailActivity extends AppCompatActivity implements ProfileView
     ImageView shareButton;
 
     String profileUrl;
+    EspressoIdlingResource espressoIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
+        espressoIdlingResource = new EspressoIdlingResource();
 
         intent = getIntent();
         initViews();
@@ -51,14 +54,26 @@ public class UserDetailActivity extends AppCompatActivity implements ProfileView
         Picasso.with(UserDetailActivity.this).load(imageUrl).into(userImageView);
         usernameTextView.setText(username);
 
-        GithubPresenter githubPresenter = new GithubPresenter();
-        githubPresenter.getUserProfile(username, this);
+        downloadProfile(username);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareProfile(username, profileUrl);
             }
         });
+    }
+
+    /**
+     * Get full profile of user.
+     * @param username identifier for github user
+     */
+    private void downloadProfile(String username) {
+        espressoIdlingResource.increment();
+        GithubPresenter githubPresenter = new GithubPresenter();
+        githubPresenter.getUserProfile(username, this);
+        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+            espressoIdlingResource.decrement(); // Set app as idle.
+        }
     }
 
     /**
@@ -110,4 +125,5 @@ public class UserDetailActivity extends AppCompatActivity implements ProfileView
     public void profileReady(GithubUser githubUser) {
         updateUI(githubUser);
     }
+
 }

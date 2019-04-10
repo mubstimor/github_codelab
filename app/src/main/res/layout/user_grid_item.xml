@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@android:color/white"
-    android:layout_margin="10dp"
+    android:layout_margin="@dimen/user_grid_spacing"
     app:cardElevation="2dp"
     app:cardPreventCornerOverlap="true"
     android:id="@+id/item_parent_layout"
