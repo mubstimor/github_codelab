@@ -88,7 +88,7 @@ public class GithubApp extends Application {
         @Override
         public void onActivityPaused(Activity activity) {
             mActivity = null;
-            unregisterReceiver(mNetworkReceiver);
+//            unregisterReceiver(mNetworkReceiver);
         }
 
         @Override

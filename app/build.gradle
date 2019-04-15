@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply from: rootProject.file('app/code_quality_tools/git-hooks/git-hooks.gradle')
 apply from: rootProject.file('app/code_quality_tools/quality.gradle')
+apply from: rootProject.file('app/code_quality_tools/coverage.gradle')
 
 
 android {
@@ -14,9 +15,20 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+        }
+    }
+    testOptions {
+        unitTests{
+            returnDefaultValues = true
+            includeAndroidResources = true
         }
     }
     productFlavors {
@@ -35,7 +47,12 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.roboelectricVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.testRunnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$rootProject.rulesVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
 }

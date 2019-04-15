@@ -21,6 +21,7 @@ import mubstimor.android.codelab.adapter.GithubUsersAdapter;
 import mubstimor.android.codelab.application.GithubApp;
 import mubstimor.android.codelab.model.GithubUser;
 import mubstimor.android.codelab.presenter.GithubPresenter;
+import mubstimor.android.codelab.util.EspressoIdlingResource;
 import mubstimor.android.codelab.util.NetworkUtility;
 
 /**
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String LIST_STATE = "listState";
     private static final String TOTAL_COUNT = "totalCount";
     private Parcelable mListState;
+    EspressoIdlingResource espressoIdlingResource;
     int hasRun;
 
     @Override
@@ -52,10 +54,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setTitle(R.string.app_label);
-
-        totalUserCountTextView = (TextView) findViewById(R.id.tv_total_users);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        espressoIdlingResource = new EspressoIdlingResource();
+        initViews();
         swipeToRefresh();
         recyclerView = findViewById(R.id.rv_gitusers);
 
@@ -77,6 +77,15 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             downloadData();
         }
+    }
+
+    /**
+     * Declares views.
+     */
+    private void initViews() {
+        totalUserCountTextView = (TextView) findViewById(R.id.tv_total_users);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
     }
 
     /**
@@ -106,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements
      * Download github user data from search API.
      */
     void downloadData() {
+        espressoIdlingResource.increment();
         progressBar.setVisibility(View.VISIBLE);
         GithubPresenter githubPresenter = new GithubPresenter();
         githubPresenter.getGithubUsers(this);
@@ -136,12 +146,19 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        new GithubApp().getmInstance().setNetworkListener(this);
+        registerReceiver();
         if (mListState != null) {
             displayData(githubUserArrayList, totalDevCount);
             gridLayoutManager.onRestoreInstanceState(mListState);
             mListState = null;
         }
+    }
+
+    /**
+     * Register network utility service.
+     */
+    private void registerReceiver() {
+        new GithubApp().getmInstance().setNetworkListener(this);
     }
 
     /**
@@ -157,6 +174,9 @@ public class MainActivity extends AppCompatActivity implements
             mAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(mAdapter);
             progressBar.setVisibility(View.GONE);
+            if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                espressoIdlingResource.decrement(); // Set app as idle.
+            }
         } catch (NullPointerException e) {
             // intentionally left blank
         }

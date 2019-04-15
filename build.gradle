@@ -5,7 +5,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
@@ -33,7 +32,9 @@ ext {
     gsonVersion = '2.8.5'
     junitVersion = '4.12'
     testRunnerVersion = '1.0.2'
+    rulesVersion = '1.0.2'
     espressoVersion = '3.0.2'
+    roboelectricVersion = '4.2'
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
